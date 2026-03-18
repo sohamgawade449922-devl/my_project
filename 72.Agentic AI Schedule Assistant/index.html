@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARIA – Agentic AI Schedule Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+  <!-- ── Header ── -->
+  <header class="hud-header">
+    <div class="logo">
+      <span class="logo-a">A</span>RIA
+      <span class="logo-sub">Agentic Intelligence</span>
+    </div>
+    <div class="header-meta">
+      <span id="live-time"></span>
+      <span id="live-date"></span>
+    </div>
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="chat"><i class="fas fa-robot"></i> Chat</button>
+      <button class="tab-btn" data-tab="schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+      <button class="tab-btn" data-tab="goals"><i class="fas fa-bullseye"></i> Goals</button>
+      <button class="tab-btn" data-tab="reminders"><i class="fas fa-bell"></i> Reminders</button>
+      <button class="tab-btn" data-tab="insights"><i class="fas fa-chart-line"></i> Insights</button>
+    </nav>
+  </header>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- CHAT TAB -->
+    <section id="tab-chat" class="tab-section active">
+      <div class="chat-layout">
+
+        <div class="chat-sidebar">
+          <div class="sidebar-header">
+            <i class="fas fa-magic"></i> Quick Actions
+          </div>
+          <div class="quick-actions">
+            <button class="qa-btn" data-msg="What's on my schedule today?">
+              <i class="fas fa-calendar-day"></i> Today's Schedule
+            </button>
+            <button class="qa-btn" data-msg="Add a task for me">
+              <i class="fas fa-plus-circle"></i> Add a Task
+            </button>
+            <button class="qa-btn" data-msg="Help me plan my week">
+              <i class="fas fa-calendar-week"></i> Plan My Week
+            </button>
+            <button class="qa-btn" data-msg="What tasks are high priority?">
+              <i class="fas fa-exclamation-triangle"></i> High Priority
+            </button>
+            <button class="qa-btn" data-msg="Set a reminder for me">
+              <i class="fas fa-bell"></i> Set Reminder
+            </button>
+            <button class="qa-btn" data-msg="Give me a productivity tip">
+              <i class="fas fa-lightbulb"></i> Productivity Tip
+            </button>
+            <button class="qa-btn" data-msg="Break down my goal into tasks">
+              <i class="fas fa-project-diagram"></i> Break Down Goal
+            </button>
+            <button class="qa-btn" data-msg="What should I focus on now?">
+              <i class="fas fa-crosshairs"></i> Focus Mode
+            </button>
+          </div>
+
+          <div class="sidebar-header" style="margin-top:1rem;">
+            <i class="fas fa-history"></i> Session Summary
+          </div>
+          <div id="session-summary" class="session-summary">
+            <div class="stat-row"><span>Tasks Added</span><span id="stat-tasks">0</span></div>
+            <div class="stat-row"><span>Reminders Set</span><span id="stat-reminders">0</span></div>
+            <div class="stat-row"><span>Goals Created</span><span id="stat-goals">0</span></div>
+          </div>
+        </div>
+
+        <div class="chat-main">
+          <div id="chat-messages" class="chat-messages">
+            <!-- Messages injected by JS -->
+          </div>
+
+          <!-- Typing indicator -->
+          <div id="typing-indicator" class="typing-indicator hidden">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="typing-label">ARIA is thinking…</span>
+          </div>
+
+          <form class="chat-input-row" id="chat-form">
+            <button type="button" id="voice-btn" class="icon-btn" title="Voice input">
+              <i class="fas fa-microphone" id="mic-icon"></i>
+            </button>
+            <input type="text" id="chat-input" placeholder="Ask ARIA anything about your schedule…" autocomplete="off" />
+            <button type="submit" class="icon-btn send-btn" title="Send">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCHEDULE TAB -->
+    <section id="tab-schedule" class="tab-section">
+      <div class="section-toolbar">
+        <h2 class="section-title"><i class="fas fa-calendar-alt"></i> My Schedule</h2>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="list"><i class="fas fa-list"></i> List</button>
+          <button class="view-btn" data-view="week"><i class="fas fa-th"></i> Week</button>
+        </div>
+      </div>
+
+      <form class="add-form" id="schedule-form">
+        <input type="text"          id="event-title"    placeholder="Task / Event title" required />
+        <input type="datetime-local" id="event-time"    required />
+        <input type="number"         id="event-duration" placeholder="Duration (min)" min="5" max="480" value="30" />
+        <select id="event-priority">
+          <option value="normal">Normal</option>
+          <option value="high">🔴 High Priority</option>
+          <option value="low">🟢 Low Priority</option>
+        </select>
+        <select id="event-category">
+          <option value="work">💼 Work</option>
+          <option value="personal">🏠 Personal</option>
+          <option value="health">💪 Health</option>
+          <option value="learning">📚 Learning</option>
+          <option value="social">👥 Social</option>
+        </select>
+        <button type="submit" class="hud-btn"><i class="fas fa-plus"></i> Add Event</button>
+      </form>
+
+      <!-- List View -->
+      <div id="schedule-list-view" class="view-panel active">
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="today">Today</button>
+          <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+          <button class="filter-btn" data-filter="high">High Priority</button>
+        </div>
+        <div id="schedule-list" class="item-list"></div>
+      </div>
+
+      <!-- Week View -->
+      <div id="schedule-week-view" class="view-panel">
+        <div id="week-grid" class="week-grid"></div>
+      </div>
+    </section>
+
+    <!-- GOALS TAB -->
+    <section id="tab-goals" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-bullseye"></i> Goals &amp; Projects</h2>
+
+      <form class="add-form" id="goal-form">
+        <input type="text"     id="goal-title"       placeholder="Goal title (e.g. Learn Python)" required />
+        <textarea              id="goal-description" placeholder="Describe your goal…" rows="2"></textarea>
+        <input type="date"     id="goal-deadline"    />
+        <select id="goal-category">
+          <option value="work">💼 Career / Work</option>
+          <option value="personal">🏠 Personal</option>
+          <option value="health">💪 Health & Fitness</option>
+          <option value="learning">📚 Learning</option>
+          <option value="financial">💰 Financial</option>
+        </select>
+        <button type="submit" class="hud-btn"><i class="fas fa-bullseye"></i> Create Goal</button>
+        <button type="button" id="ai-breakdown-btn" class="hud-btn secondary">
+          <i class="fas fa-magic"></i> AI: Break into Tasks
+        </button>
+      </form>
+
+      <div id="goals-list" class="goals-grid"></div>
+    </section>
+
+    <!-- REMINDERS TAB -->
+    <section id="tab-reminders" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-bell"></i> Reminders</h2>
+
+      <div class="info-banner" id="notif-banner" style="display:none">
+        <i class="fas fa-info-circle"></i> Enable browser notifications to receive alerts.
+        <button id="enable-notif" class="hud-btn small">Enable</button>
+      </div>
+
+      <form class="add-form" id="reminder-form">
+        <input type="text"           id="reminder-title"    placeholder="Reminder message" required />
+        <input type="datetime-local" id="reminder-time"     required />
+        <select id="reminder-repeat">
+          <option value="none">No repeat</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+        </select>
+        <button type="submit" class="hud-btn"><i class="fas fa-bell"></i> Set Reminder</button>
+      </form>
+
+      <div id="reminder-list" class="item-list"></div>
+    </section>
+
+    <!-- INSIGHTS TAB -->
+    <section id="tab-insights" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-chart-line"></i> Productivity Insights</h2>
+
+      <div class="insights-grid">
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-tasks"></i></div>
+          <div class="insight-value" id="ins-total-tasks">0</div>
+          <div class="insight-label">Total Tasks</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-check-circle"></i></div>
+          <div class="insight-value" id="ins-completed">0</div>
+          <div class="insight-label">Completed</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-fire"></i></div>
+          <div class="insight-value" id="ins-streak">0</div>
+          <div class="insight-label">Day Streak</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-clock"></i></div>
+          <div class="insight-value" id="ins-hours">0h</div>
+          <div class="insight-label">Scheduled Hours</div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="sub-title"><i class="fas fa-chart-bar"></i> Tasks by Category</h3>
+        <div id="category-chart" class="category-chart"></div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="sub-title"><i class="fas fa-lightbulb"></i> AI Suggestions</h3>
+        <div id="ai-suggestions" class="suggestions-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
