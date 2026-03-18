@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NeuralCommander</string>
+    <string name="accessibility_service_description">
+        NeuralCommander monitors notifications from social apps to classify them
+        and enforce Focus Mode by suppressing distractions during study sessions.
+    </string>
+</resources>

@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.eggs/
+
+# Environment
+.env
+*.env
+
+# Models (large binary files)
+neural_engine/models/intent_classifier/
+neural_engine/models/rl_qtable.json
+
+# Node / React Native
+mobile/node_modules/
+mobile/.gradle/
+mobile/android/build/
+mobile/android/.gradle/
+mobile/android/app/build/
+mobile/android/.idea/
+mobile/ios/Pods/
+mobile/ios/build/
+
+# Docker volumes (local)
+pg_data/
+
+# Terraform
+infrastructure/terraform/.terraform/
+infrastructure/terraform/*.tfstate
+infrastructure/terraform/*.tfstate.backup
+infrastructure/terraform/.terraform.lock.hcl
+
+# IDE
+.idea/
+.vscode/
+*.swp
