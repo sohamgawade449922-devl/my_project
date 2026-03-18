@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JARVIS – AI Personal Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+  <!-- ── HUD Header ── -->
+  <header class="hud-header">
+    <div class="logo">
+      <span class="logo-j">J</span>ARVIS
+    </div>
+    <div class="header-meta">
+      <span id="live-time"></span>
+      <span id="live-date"></span>
+    </div>
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="home"><i class="fas fa-home"></i> Home</button>
+      <button class="tab-btn" data-tab="schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+      <button class="tab-btn" data-tab="notes"><i class="fas fa-sticky-note"></i> Notes</button>
+      <button class="tab-btn" data-tab="timer"><i class="fas fa-stopwatch"></i> Timer</button>
+      <button class="tab-btn" data-tab="reminders"><i class="fas fa-bell"></i> Reminders</button>
+    </nav>
+  </header>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- HOME TAB -->
+    <section id="tab-home" class="tab-section active">
+      <div class="orb-wrapper">
+        <div class="orb" id="orb">
+          <div class="orb-ring ring1"></div>
+          <div class="orb-ring ring2"></div>
+          <div class="orb-ring ring3"></div>
+          <i class="fas fa-microphone orb-icon" id="mic-icon"></i>
+        </div>
+        <p class="orb-hint" id="orb-hint">Click the orb or say <strong>"Hey Jarvis"</strong></p>
+      </div>
+
+      <div class="response-box" id="response-box">
+        <p class="response-label">JARVIS</p>
+        <p id="response-text">Initialising… Good to see you, Sir.</p>
+      </div>
+
+      <div class="transcript-box">
+        <p class="response-label">YOU SAID</p>
+        <p id="transcript-text">—</p>
+      </div>
+
+      <div class="quick-commands">
+        <p class="section-title">Quick Commands</p>
+        <div class="cmd-grid">
+          <button class="cmd-btn" data-cmd="what time is it">🕐 Time</button>
+          <button class="cmd-btn" data-cmd="what is the date">📅 Date</button>
+          <button class="cmd-btn" data-cmd="open google">🌐 Google</button>
+          <button class="cmd-btn" data-cmd="open youtube">▶️ YouTube</button>
+          <button class="cmd-btn" data-cmd="show my schedule">📋 Schedule</button>
+          <button class="cmd-btn" data-cmd="show my notes">📝 Notes</button>
+          <button class="cmd-btn" data-cmd="start timer">⏱ Timer</button>
+          <button class="cmd-btn" data-cmd="tell me a joke">😄 Joke</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHEDULE TAB -->
+    <section id="tab-schedule" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-calendar-alt"></i> My Schedule</h2>
+
+      <form class="add-form" id="schedule-form">
+        <input type="text"   id="event-title" placeholder="Event / Task title" required />
+        <input type="datetime-local" id="event-time" required />
+        <select id="event-priority">
+          <option value="normal">Normal</option>
+          <option value="high">High Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+        <button type="submit" class="hud-btn"><i class="fas fa-plus"></i> Add Event</button>
+      </form>
+
+      <div id="schedule-list" class="item-list"></div>
+    </section>
+
+    <!-- NOTES TAB -->
+    <section id="tab-notes" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-sticky-note"></i> Notes</h2>
+
+      <form class="add-form" id="notes-form">
+        <input type="text" id="note-title" placeholder="Note title" required />
+        <textarea id="note-body" placeholder="Write your note…" rows="3" required></textarea>
+        <button type="submit" class="hud-btn"><i class="fas fa-plus"></i> Save Note</button>
+      </form>
+
+      <div id="notes-list" class="item-list notes-grid"></div>
+    </section>
+
+    <!-- TIMER TAB -->
+    <section id="tab-timer" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-stopwatch"></i> Timer &amp; Stopwatch</h2>
+
+      <div class="timer-card">
+        <h3>Countdown Timer</h3>
+        <div class="timer-inputs">
+          <label>Hours <input type="number" id="t-hours" min="0" max="23" value="0" /></label>
+          <label>Minutes <input type="number" id="t-minutes" min="0" max="59" value="5" /></label>
+          <label>Seconds <input type="number" id="t-seconds" min="0" max="59" value="0" /></label>
+        </div>
+        <div class="timer-display" id="countdown-display">00:05:00</div>
+        <div class="timer-btns">
+          <button class="hud-btn" id="cd-start"><i class="fas fa-play"></i> Start</button>
+          <button class="hud-btn secondary" id="cd-pause"><i class="fas fa-pause"></i> Pause</button>
+          <button class="hud-btn secondary" id="cd-reset"><i class="fas fa-redo"></i> Reset</button>
+        </div>
+      </div>
+
+      <div class="timer-card">
+        <h3>Stopwatch</h3>
+        <div class="timer-display" id="stopwatch-display">00:00:00</div>
+        <div class="timer-btns">
+          <button class="hud-btn" id="sw-start"><i class="fas fa-play"></i> Start</button>
+          <button class="hud-btn secondary" id="sw-lap"><i class="fas fa-flag"></i> Lap</button>
+          <button class="hud-btn secondary" id="sw-reset"><i class="fas fa-redo"></i> Reset</button>
+        </div>
+        <div id="lap-list" class="lap-list"></div>
+      </div>
+    </section>
+
+    <!-- REMINDERS TAB -->
+    <section id="tab-reminders" class="tab-section">
+      <h2 class="section-title"><i class="fas fa-bell"></i> Reminders</h2>
+
+      <div class="info-banner" id="notif-banner" style="display:none">
+        <i class="fas fa-info-circle"></i> Enable browser notifications to receive alerts.
+        <button id="enable-notif" class="hud-btn small">Enable</button>
+      </div>
+
+      <form class="add-form" id="reminder-form">
+        <input type="text" id="reminder-title" placeholder="Reminder message" required />
+        <input type="datetime-local" id="reminder-time" required />
+        <button type="submit" class="hud-btn"><i class="fas fa-bell"></i> Set Reminder</button>
+      </form>
+
+      <div id="reminder-list" class="item-list"></div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
